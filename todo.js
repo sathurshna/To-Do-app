@@ -16,36 +16,56 @@ async function add() {
     loadTasks();
 }
 
-async function loadTasks() {
+// async function loadTasks() {
 
-    const response = await fetch("http://localhost:5000/tasks");
-    const data = await response.json();
+//     const response = await fetch("http://localhost:5000/tasks");
+//     const data = await response.json();
 
-    const ul = document.getElementById("one");
-    ul.innerHTML = "";
+//     console.log(data); 
 
-    data.forEach(task => {
+//     const ul = document.getElementById("one");
+//     ul.innerHTML = "";
 
-        const li = document.createElement("li");
-        li.textContent = task.task;
+//     data.forEach(task => {
 
-        const btn = document.createElement("button");
-        btn.textContent = "Delete";
-        btn.className = "delete-btn";
+//         const li = document.createElement("li");
+//         li.textContent = task.task;
 
-        btn.onclick = async function () {
-            await fetch(`http://localhost:5000/tasks/${task.id}`, {
-                method: "DELETE"
+//         const btn = document.createElement("button");
+//         btn.textContent = "Delete";
+//         btn.className = "delete-btn";
+
+//         btn.onclick = async function () {
+//             await fetch(`http://localhost:5000/tasks/${task.id}`, {
+//                 method: "DELETE"
+//             });
+//             loadTasks();
+//         };
+
+//         li.appendChild(btn);
+//         ul.appendChild(li);
+//     });
+// }
+
+// loadTasks();
+
+function loadTasks() {
+    fetch("/tasks")
+        .then(res => res.json())
+        .then(data => {
+            const list = document.getElementById("taskList");
+            list.innerHTML = "";
+
+            data.forEach(task => {
+                const li = document.createElement("li");
+                li.textContent = task.title + " - " + task.description;
+                list.appendChild(li);
             });
-            loadTasks();
-        };
-
-        li.appendChild(btn);
-        ul.appendChild(li);
-    });
+        });
 }
 
 loadTasks();
+
 
 function deletefn(event) {
     event.target.parentNode.remove();
@@ -60,3 +80,22 @@ fetch("http://localhost:5000/api/users")
     console.error("Error:", err);
   });
 
+document.querySelector("form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const title = document.getElementById("title").value;
+    const description = document.getElementById("description").value;
+    const deadline = document.getElementById("deadline").value;
+
+    fetch("/add-task", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ title, description, deadline })
+    })
+    .then(res => res.json())
+    .then(data => {
+        loadTasks();   // 🔥 ADD THIS LINE HERE
+    });
+});

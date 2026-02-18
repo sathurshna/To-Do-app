@@ -4,7 +4,6 @@ const cors = require("cors");
 
 const app = express();
 app.use(cors());
-app.options("*", cors());
 app.use(express.json());
 
 
@@ -26,11 +25,20 @@ db.connect((err) => {
 
 // GET all tasks
 app.get("/tasks", (req, res) => {
-    db.query("SELECT * FROM tasks", (err, result) => {
-        if (err) return res.send(err);
-        res.json(result);
+
+    const sql = "SELECT * FROM tasks";
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Database error");
+        } else {
+            res.json(result);
+        }
     });
+
 });
+
 
 // ADD task
 app.post("/tasks", (req, res) => {
