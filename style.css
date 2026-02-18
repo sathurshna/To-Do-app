@@ -1,0 +1,99 @@
+/* Body styling */
+body {
+    margin: 0;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'Segoe UI', sans-serif;
+
+    background-image: url("https://miro.medium.com/v2/resize:fit:4800/format:webp/1*nyU2IcNL3TVxZ_GPkkmt2g.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Glass container */
+.container {
+    width: 380px;
+    padding: 30px;
+    border-radius: 15px;
+
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Heading */
+h2 {
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+/* Input + Button wrapper */
+.input-section {
+    display: flex;
+    gap: 10px;
+}
+
+/* Input field */
+input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+}
+
+/* Add button */
+button {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    background: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* Delete button */
+.delete-btn {
+    background: #ff4d4d;
+}
+
+.delete-btn:hover {
+    background: #cc0000;
+}
+
+/* List */
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+/* List item */
+li {
+    background: white;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 8px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    transition: 0.3s;
+}
+
+li:hover {
+    transform: translateY(-3px);
+}
