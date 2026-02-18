@@ -3,17 +3,18 @@ const mysql = require("mysql2");
 const cors = require("cors");
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
 
-// MySQL connection
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "root123",
     database: "todoapp"
 });
+
 
 db.connect((err) => {
     if (err) {
@@ -23,37 +24,30 @@ db.connect((err) => {
     }
 });
 
-// GET all tasks
 app.get("/tasks", (req, res) => {
-
-    const sql = "SELECT * FROM tasks";
-
-    db.query(sql, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send("Database error");
-        } else {
-            res.json(result);
-        }
+    connection.query("SELECT * FROM tasks", (err, results) => {
+        if (err) throw err;
+        res.json(results);
     });
-
 });
 
 
-// ADD task
-app.post("/tasks", (req, res) => {
-    const { task } = req.body;
-    db.query("INSERT INTO tasks (task) VALUES (?)", [task], (err, result) => {
-        if (err) return res.send(err);
+app.post("/add-task", (req, res) => {
+    const { title, description, deadline } = req.body;
+
+    const sql = "INSERT INTO tasks (title, description, due_date, status, priority, created_at) VALUES (?, ?, ?, 'Pending', 'Medium', NOW())";
+
+    connection.query(sql, [title, description, deadline], (err, result) => {
+        if (err) throw err;
         res.json({ message: "Task added" });
     });
 });
 
-// DELETE task
 app.delete("/tasks/:id", (req, res) => {
-    const { id } = req.params;
-    db.query("DELETE FROM tasks WHERE id = ?", [id], (err, result) => {
-        if (err) return res.send(err);
+    const id = req.params.id;
+
+    connection.query("DELETE FROM tasks WHERE id = ?", [id], (err, result) => {
+        if (err) throw err;
         res.json({ message: "Task deleted" });
     });
 });
